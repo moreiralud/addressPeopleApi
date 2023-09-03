@@ -1,8 +1,10 @@
 package com.lud.addresspeopleapi;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +25,6 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @PostMapping
-    public Address createAddress(@RequestBody Address address) {
-        return addressRepository.save(address);
-    }
-
-
     @GetMapping
     public List<Address> getAllAddresses() {
         return addressRepository.findAll();
@@ -44,10 +40,14 @@ public class AddressController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<String> createAddress(@RequestBody @Valid Address address,
                                                 @RequestParam Long userId) {
-        addressService.createAddressWithUser(address, userId);
+        try {
+            addressService.createAddressWithUser(address, userId);
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
         return ResponseEntity.ok("Endereço criado com sucesso");
     }
 
