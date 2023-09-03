@@ -40,7 +40,7 @@ Para executar o projeto localmente, siga estas etapas:
 
 ## Autores
 
-- [Seu Nome] - Desenvolvedor principal
+- [Ludmila]
 
 ## Licença
 
