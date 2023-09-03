@@ -2,7 +2,6 @@ package com.lud.addresspeopleapi;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,4 +39,35 @@ public class AddressService {
 
         return false; // Endereço não foi encontrado
     }
+    public List<Address> findByStreet(String street) {
+        return addressRepository.findByStreet(street);
+    }
+
+    public List<Address> findByDistrict(String district) {
+        return addressRepository.findByDistrict(district);
+    }
+
+    public List<Address> findByCity(String city) {
+        return addressRepository.findByCityContaining(city);
+    }
+
+    public Address updateAddress(Long id, Address updatedAddress) {
+        Address existingAddress = getAddressById(id);
+
+        if (existingAddress != null) {
+            // Atualize as informações do endereço com os dados do updatedAddress
+            existingAddress.setStreet(updatedAddress.getStreet());
+            existingAddress.setDistrict(updatedAddress.getDistrict());
+            existingAddress.setCity(updatedAddress.getCity());
+            existingAddress.setHouseNumber(updatedAddress.getHouseNumber());
+            existingAddress.setState(updatedAddress.getState());
+            existingAddress.setCountry(updatedAddress.getCountry());
+
+            return addressRepository.save(existingAddress);
+        }
+
+        return null; // Endereço não encontrado
+    }
+
+
 }

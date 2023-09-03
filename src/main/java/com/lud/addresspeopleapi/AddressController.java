@@ -28,18 +28,14 @@ public class AddressController {
         return addressRepository.save(address);
     }
 
+
     @GetMapping
     public List<Address> getAllAddresses() {
         return addressRepository.findAll();
     }
 
-    @PutMapping("/{id}")
-    public Address updateAddress(@PathVariable Long id, @RequestBody Address updatedAddress) {
-        updatedAddress.setId(id);
-        return addressRepository.save(updatedAddress);
-    }
 
-    @DeleteMapping("/addresses/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAddress(@PathVariable Long id) {
         boolean addressDeleted = addressService.deleteAddress(id);
         if (addressDeleted) {
@@ -48,14 +44,14 @@ public class AddressController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/addresses")
+    @PostMapping("/create")
     public ResponseEntity<String> createAddress(@RequestBody @Valid Address address,
                                                 @RequestParam Long userId) {
         addressService.createAddressWithUser(address, userId);
         return ResponseEntity.ok("Endereço criado com sucesso");
     }
 
-    @GetMapping("/addresses/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
         Address address = addressService.getAddressById(id);
         if (address == null) {
@@ -63,5 +59,34 @@ public class AddressController {
         }
         return ResponseEntity.ok(address);
     }
+    @GetMapping("/search/by-street")
+    public ResponseEntity<List<Address>> searchByStreet(@RequestParam String street) {
+        List<Address> addresses = addressService.findByStreet(street);
+        return ResponseEntity.ok(addresses);
+    }
+
+    @GetMapping("/search/by-district")
+    public ResponseEntity<List<Address>> searchByDistrict(@RequestParam String district) {
+        List<Address> addresses = addressService.findByDistrict(district);
+        return ResponseEntity.ok(addresses);
+    }
+
+    @GetMapping("/search/by-city")
+    public ResponseEntity<List<Address>> searchByCity(@RequestParam String city) {
+        List<Address> addresses = addressService.findByCity(city.trim());
+        return ResponseEntity.ok(addresses);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Address> updateAddress(@PathVariable Long id, @RequestBody Address updatedAddress) {
+        Address updated = addressService.updateAddress(id, updatedAddress);
+
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 

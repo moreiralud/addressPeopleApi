@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
 import java.lang.String;
 
 @Entity
 public class Address {
     @Id
-    @Column
-    @NotBlank
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -79,7 +76,7 @@ public class Address {
     }
 
     public void setCep(String city) {
-        this.city = city;
+        this.cep = cep;
     }
 
     public String getHouseNumber() {
