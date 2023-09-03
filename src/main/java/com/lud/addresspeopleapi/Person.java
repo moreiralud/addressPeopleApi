@@ -2,11 +2,12 @@ package com.lud.addresspeopleapi;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Person {
@@ -31,8 +32,12 @@ public class Person {
     @Email(message = "O e-mail deve ser válido")
     private String email;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> addresses = new ArrayList<>();
+//    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Address> addresses = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "person_addresses", joinColumns = @JoinColumn(name = "person_id"))
+    private Set<Address> addresses = new HashSet<>();
 
     // Getters e setters
     public Long getId() {
@@ -83,7 +88,11 @@ public class Person {
         this.email = email;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return  addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 }

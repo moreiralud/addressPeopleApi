@@ -29,5 +29,8 @@ import java.util.Optional;
             return false;
         }
 
-        // Outros métodos do serviço...
+        public Person createPerson (Person person) {
+            person.setAddresses(null);
+            return personRepository.save(person);
+        }
     }

@@ -23,7 +23,7 @@ public class PersonController {
 
     @PostMapping
     public Person createPerson(@RequestBody Person person) {
-        return personRepository.save(person);
+        return personService.createPerson(person);
     }
 
     @GetMapping
@@ -45,6 +45,6 @@ public class PersonController {
         }
         return ResponseEntity.notFound().build(); // Retorna status 404 se a pessoa não for encontrada
     }
-    // ... Other methods ...
+
 }
 
